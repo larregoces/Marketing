@@ -1,0 +1,153 @@
+﻿
+//DECLARE @forecastPath string = "wasb://weather@desdevthinkanalyst.blob.core.windows.net/ProfileSource/{*}";
+DECLARE @forecastPath string = "wasb://weather@desdevthinkanalyst.blob.core.windows.net/ProfileSource/profiledata_scal_tou_aznh.csv";
+//For data lake use the one below
+//DECLARE @out string = "adl://desdev.azuredatalakestore.net/EngieIntervalLoadForecast/SampledIntervalUsage/sampled_usage.txt";
+DECLARE @out string = "wasb://weather@desdevthinkanalyst.blob.core.windows.net/ProfileOutput/profiledata_summary.csv";
+@ProfileSummary = 
+    EXTRACT meterid string,
+            day DateTime?,
+            Hr01 double?,
+            Hr02 double?,
+            Hr03 double?,
+            Hr04 double?,
+            Hr05 double?,
+            Hr06 double?,
+            Hr07 double?,
+            Hr08 double?,
+            Hr09 double?,
+            Hr10 double?,
+            Hr11 double?,
+            Hr12 double?,
+            Hr13 double?,
+            Hr14 double?,
+            Hr15 double?,
+            Hr16 double?,
+            Hr17 double?,
+            Hr18 double?,
+            Hr19 double?,
+            Hr20 double?,
+            Hr21 double?,
+            Hr22 double?,
+            Hr23 double?,
+            Hr24 double?,
+            origin string,
+            channel int?,
+            month int?,
+            year int?,
+            dow_type int?,
+            holiday int?,
+            regioncode string,
+            dailyusage double?,
+            dailymax double?,
+            usage_5x16 double?,
+            usage_2x16 double?,
+            usage_7x8 double?,
+            usage_5x9 double?,
+            usage_2x9 double?,
+            avg_5x16 double?,
+            avg_2x16 double?,
+            avg_7x8 double?,
+            avg_5x9 double?,
+            avg_2x9 double?,
+            max_5x16 double?,
+            max_2x16 double?,
+            max_7x8 double?,
+            max_5x9 double?,
+            max_2x9 double?,
+            min_5x16 double?,
+            min_2x16 double?,
+            min_7x8 double?,
+            min_5x9 double?,
+            min_2x9 double?,
+            day_5x16 double?,
+            day_2x16 double?,
+            day_7x8 double?,
+            day_5x9 double?,
+            day_2x9 double?
+
+            
+    FROM @forecastPath
+ //   USING Extractors.Csv();
+//   USING Extractors.Text(quoting: false);
+    USING Extractors.Csv(silent: true);
+
+@test = SELECT * FROM @ProfileSummary;
+
+OUTPUT @test
+TO @out
+//USING Outputters.Text(delimiter: ',');
+USING Outputters.Csv();
+
+
+//DECLARE @forecastPath string = "wasb://weather@desdevthinkanalyst.blob.core.windows.net/ProfileSource/{*}";
+DECLARE @forecastPath1 string = "wasb://weather@desdevthinkanalyst.blob.core.windows.net/KPI/CLV_to_AZURE_8-15-2016.csv";
+//For data lake use the one below
+//DECLARE @out string = "adl://desdev.azuredatalakestore.net/EngieIntervalLoadForecast/SampledIntervalUsage/sampled_usage.txt";
+DECLARE @out1 string = "wasb://weather@desdevthinkanalyst.blob.core.windows.net/KPI/CLVML.csv";
+@ProfileSummary = 
+    EXTRACT Disco string?,
+            Zoneid string?,
+            UtilityAccountNumber string?,
+            EnrollmentID string?,
+            CustomerType string?,
+            OriginationOfContract string?,
+            Term int?,
+            RolloverStatus string?,
+            Creation_Date DateTime?,
+            ContractBeginDate DateTime?,
+            EntryDate DateTime?,
+            MonthOfContract DateTime?,
+            CustomerStatus string?,
+            Contract_Price double?,
+            Bill_Price double?,
+            PriceFromTables double?,
+            SupplyCost double?,
+            Price double?,
+            Margin double?,
+            Cost double?,
+            January double?,
+            February double?,
+            March double?,
+            April double?,
+            June double?,
+            July double?,
+            August double?,
+            September double?,
+            October double?,
+            November double?,
+            December double?,
+            AnnualVolume double?,
+            ServiceState string?,
+            RunDate DateTime?,
+            AgentName string?,
+            Channel_name string?,
+            Rce_Calc double?,
+            uid string?,
+            Fom DateTime?,
+            Churn double?,
+            Annual_Ch double?,
+            Cts double?,
+            Annual_Margin double?,
+            Contract_Margin double?,
+            Retention_Rate double?,
+            Revenue double?,
+            Bad_Debt double?,
+            Disc_Rate double?,
+            Cac double?,
+            Clv double?,
+            Cm double?,
+            Clv2 double?,
+            RAtio_Clv_Cac double?
+           
+    FROM @forecastPath1
+ //   USING Extractors.Csv();
+//   USING Extractors.Text(quoting: false);
+    USING Extractors.Csv(silent: true);
+
+@test = SELECT * FROM @ProfileSummary;
+
+OUTPUT @test
+TO @out1
+//USING Outputters.Text(delimiter: ',');
+USING Outputters.Csv();

@@ -1,0 +1,72 @@
+﻿//DECLARE @forecastPath string = "wasb://weather@desdevthinkanalyst.blob.core.windows.net/ProfileSource/{*}";
+DECLARE @kpiPath string = "wasb://weather@desdevthinkanalyst.blob.core.windows.net/KPI/CLV_to_AZURE_8-15-2016.csv";
+//For data lake use the one below
+//DECLARE @out string = "adl://desdev.azuredatalakestore.net/EngieIntervalLoadForecast/SampledIntervalUsage/sampled_usage.txt";
+DECLARE @out string = "wasb://weather@desdevthinkanalyst.blob.core.windows.net/KPI/CLVML.csv";
+@kpiSummary = 
+    EXTRACT 
+            Disco_id string,
+            Zone_id string,
+            Utility_Ac_Num string,
+            Enrollment_id string,
+            Customer_Type string,
+            Origination_Contract string,
+            Term_c double?,
+            Rollover_Status string,
+            Creation_Date DateTime?,
+            Contract_Beg_Date DateTime?,
+            Entry_Date DateTime?,
+            Month_Contract DateTime?,
+            Customer_Status string,
+            Contract_Price double?,
+            Bill_Price double?,
+            Price_From_Tables double?,
+            Supply_Cost double?,
+            Price double?,
+            Margin double?,
+            Cost double?,
+            Jan_u double?,
+            Feb_u double?,
+            Mar_u double?,
+            Apr_u double?,
+            Jun_u double?,
+            Jul_u double?,
+            Aug_u double?,
+            Sep_u double?,
+            Oct_u double?,
+            Nov_u double?,
+            Dec_u double?,
+            Annual_Volume double?,
+            Service_State string,
+            Run_Date DateTime?,
+            Agent_Name string,
+            Channel_name string,
+            Rce_Calc double?,
+            uid string,
+            Fom_Date DateTime?,
+            Churn double?,
+            Annual_Ch double?,
+            Cost_to_Serve double?,
+            Annual_Margin double?,
+            Contract_Margin double?,
+            Retention_Rate double?,
+            Revenue double?,
+            Bad_Debt double?,
+            Disc_Rate double?,
+            Cost_to_acq double?,
+            Clv_1 double?,
+            Cm_1 double?,
+            Clv_2 double?,
+            Ratio_Clv_Cac double?
+           
+    FROM @kpiPath
+//   USING Extractors.Csv();
+//   USING Extractors.Text(quoting: false);
+    USING Extractors.Csv(silent: true);
+
+@test = SELECT * FROM @kpiSummary;
+
+OUTPUT @test
+TO @out
+//USING Outputters.Text(delimiter: ',');
+USING Outputters.Csv();

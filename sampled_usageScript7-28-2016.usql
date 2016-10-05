@@ -1,0 +1,87 @@
+﻿//DECLARE @forecastPath string = "wasb://weather@desdevthinkanalyst.blob.core.windows.net/ProfileSource/{*}";
+DECLARE @forecastPath string = "adl://desdev.azuredatalakestore.net/EngieIntervalLoadForecast/SampledIntervalUsage/sampled_usage.txt";
+//For data lake use the one below
+//DECLARE @out string = "adl://desdev.azuredatalakestore.net/EngieIntervalLoadForecast/SampledIntervalUsage/sampled_usage.txt";
+DECLARE @out string = "wasb://weather@desdevthinkanalyst.blob.core.windows.net/ProfileSource/sampled_usage.csv";
+@ProfileSummary = 
+    EXTRACT 
+            utility_account_number string,
+            congestion_zone string,
+            load_profile string,
+            date_time DateTime?,
+            year int,
+            month int,
+            day int,
+            hour int,
+            end_time DateTime?,
+            usage_interval string,
+            usage double?,
+            profile_usage double?,
+            actual_usage double?,
+            percent_daily_usage double?,
+            percent_monthly_usage double?,
+            actual_daily_usage double?,
+            unit_of_measurement string,
+            state string,
+            utility string,
+            utility_source string,
+            utility_type string,
+            date_received DateTime?
+
+
+            
+    FROM @forecastPath
+//  USING Extractors.Csv();
+    USING Extractors.Text(quoting: true);
+//  USING Extractors.Csv(silent: true);
+
+@test = SELECT * FROM @ProfileSummary;
+
+OUTPUT @test
+TO @out
+USING Outputters.Text(delimiter: ',');
+
+//DECLARE @forecastPath string = "wasb://weather@desdevthinkanalyst.blob.core.windows.net/ProfileSource/{*}";
+DECLARE @forecastPath string = "adl://desdev.azuredatalakestore.net/EngieIntervalLoadForecast/SampledIntervalUsage/sampled_usage.txt";
+//For data lake use the one below
+//DECLARE @out string = "adl://desdev.azuredatalakestore.net/EngieIntervalLoadForecast/SampledIntervalUsage/sampled_usage.txt";
+DECLARE @out string = "wasb://weather@desdevthinkanalyst.blob.core.windows.net/KPI/CLV/account_level.csv";
+@ProfileSummary = 
+    EXTRACT 
+            utility_account_number string,
+            congestion_zone string,
+            load_profile string,
+            date_time DateTime?,
+            year int,
+            month int,
+            day int,
+            hour int,
+            end_time DateTime?,
+            usage_interval string,
+            usage double?,
+            profile_usage double?,
+            actual_usage double?,
+            percent_daily_usage double?,
+            percent_monthly_usage double?,
+            actual_daily_usage double?,
+            unit_of_measurement string,
+            state string,
+            utility string,
+            utility_source string,
+            utility_type string,
+            date_received DateTime?
+
+
+            
+    FROM @forecastPath
+//  USING Extractors.Csv();
+    USING Extractors.Text(quoting: true);
+//  USING Extractors.Csv(silent: true);
+
+@test = SELECT * FROM @ProfileSummary;
+
+OUTPUT @test
+TO @out
+USING Outputters.Text(delimiter: ',');
+
+
